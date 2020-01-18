@@ -35,7 +35,42 @@ router.post('/video', function(req, res, next) {
                         formats.push(item);
                     }
                 });
+                console.log(info.url);
                 res.render('listvideo', {meta: {id: info.id, formats: formats}});
+            })
+        }
+        else {
+            res.render('listvideo', {error: 'The link you provided either not a valid url or it is not acceptable'});
+        }
+    });
+
+
+
+})
+router.post('/viddown', function(req, res, next) {
+    var url = req.body.url,
+        formats = [],
+        pattern = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+
+    request.get(url, function (err, resp, body) {
+        // check if it is valid url
+        if(pattern.test(resp.request.uri.href)) {
+            ytdl.getInfo(url, ['--youtube-skip-dash-manifest'], function(err, info) {
+                if(err) return res.render('listvideo', {error: 'The link you provided either not a valid url or it is not acceptable'});
+
+                // push all video formats for download (skipping audio)
+                var flag=true;
+                info.formats.forEach(function(item) {
+                    if(item.format_note === '360p' &&item.ext === 'mp4' && flag===true && item.filesize) {
+                        console.log(info);
+                        item.filesize = item.filesize ? bytesToSize(item.filesize): 'unknown';
+                        formats.push(item);
+                        res.send({url:item.url});
+                        flag=false;
+                    }
+                });
+                
+                //res.render('listvideo', {meta: {id: info.id, formats: formats}});
             })
         }
         else {
