@@ -61,12 +61,12 @@ router.post('/viddown', function(req, res, next) {
                 // push all video formats for download (skipping audio)
                 var flag=true;
                 info.formats.forEach(function(item) {
-                    if(item.format_note === '360p' &&item.ext === 'mp4' && flag===true && item.filesize) {
+                    if(item.format_id === '18' && item.filesize) {
                         console.log(info);
                         item.filesize = item.filesize ? bytesToSize(item.filesize): 'unknown';
                         formats.push(item);
                         res.send({url:item.url});
-                        flag=false;
+                        
                     }
                 });
                 
