@@ -55,14 +55,14 @@ router.post('/viddown', function(req, res, next) {
     request.get(url, function (err, resp, body) {
         // check if it is valid url
         if(pattern.test(resp.request.uri.href)) {
-            ytdl.getInfo(url, ['--youtube-skip-dash-manifest'], function(err, info) {
+            ytdl.getInfo(url, ['--youtube-skip-dash-manifest','-f 18'], function(err, info) {
                 if(err) return res.render('listvideo', {error: 'The link you provided either not a valid url or it is not acceptable'});
-
+                console.log(info);
                 // push all video formats for download (skipping audio)
                 var flag=true;
                 info.formats.forEach(function(item) {
                     if(item.format_id === '18' && item.filesize) {
-                        console.log(info);
+                        
                         item.filesize = item.filesize ? bytesToSize(item.filesize): 'unknown';
                         formats.push(item);
                         res.send({url:item.url});
