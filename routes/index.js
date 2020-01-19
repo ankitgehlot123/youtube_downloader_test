@@ -3,10 +3,6 @@ var router = express.Router();
 var ytdl = require('youtube-dl');
 var request = require('request');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Youtube Downloader Web App' });
-});
 
 // convert to human readable format
 function bytesToSize(bytes) {
