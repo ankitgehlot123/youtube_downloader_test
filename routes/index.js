@@ -18,7 +18,7 @@ router.post('/viddown', function(req, res, next) {
 
     request.get(url, function (err, resp, body) {
         // check if it is valid url
-        if(pattern.test(resp.request.uri.href)) {
+        //if(pattern.test(resp.request.uri.href)) {
             yd.getInfo(url,['--youtube-skip-dash-manifest'], function(err, info) {
                 
                 if(err) return res.send({error: 'The link you provided either not a valid url or it is not acceptable'});
@@ -32,10 +32,10 @@ router.post('/viddown', function(req, res, next) {
                 
                 //res.render('listvideo', {meta: {id: info.id, formats: formats}});
             })
-        }
-        else {
-            res.send({error: 'The link you provided either not a valid url or it is not acceptable'});
-        }
+        //}
+        //else {
+         //   res.send({error: 'The link you provided either not a valid url or it is not acceptable'});
+        //}
     });
 
 
