@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var ytdl = require('youtube-dl');
+var yd = require('youtube-dl');
 var request = require('request');
 
 
@@ -19,7 +19,7 @@ router.post('/viddown', function(req, res, next) {
     request.get(url, function (err, resp, body) {
         // check if it is valid url
         if(pattern.test(resp.request.uri.href)) {
-            ytdl.getInfo(url,['--youtube-skip-dash-manifest'], function(err, info) {
+            yd.getInfo(url,['--youtube-skip-dash-manifest'], function(err, info) {
                 
                 if(err) return res.send({error: 'The link you provided either not a valid url or it is not acceptable'});
                  console.log("abc");
